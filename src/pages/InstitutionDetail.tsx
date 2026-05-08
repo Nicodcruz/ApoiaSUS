@@ -1,6 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowRight, Heart, Sparkles, Target, Award, ChevronDown } from "lucide-react";
+import {
+  ArrowRight,
+  Heart,
+  Sparkles,
+  Target,
+  Award,
+  ChevronDown,
+  Link2,
+  Linkedin,
+  Globe,
+  Share2,
+  Check,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -13,9 +25,11 @@ interface Institution {
   impact: string | null;
   image_url: string | null;
   certification_url: string | null;
+  linkedin_url: string | null;
+  website_url: string | null;
 }
 
-/** Desktop: 2 linhas com "Ver mais..." */
+/** Desktop: 2 linhas + "Ver mais..." */
 const ExpandableCard = ({
   icon,
   iconClass,
@@ -57,7 +71,7 @@ const ExpandableCard = ({
   );
 };
 
-/** Mobile: accordion suspense */
+/** Mobile: accordion */
 const AccordionCard = ({
   icon,
   iconClass,
@@ -93,6 +107,86 @@ const AccordionCard = ({
       >
         <p className="px-6 pb-6 text-muted-foreground">{content}</p>
       </div>
+    </div>
+  );
+};
+
+/** Botões de compartilhamento */
+const ShareBar = ({
+  name,
+  linkedinUrl,
+  websiteUrl,
+}: {
+  name: string;
+  linkedinUrl: string | null;
+  websiteUrl: string | null;
+}) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // fallback silencioso
+    }
+  };
+
+  return (
+    <div className="flex items-center gap-2">
+      {/* Copiar link da página */}
+      <button
+        type="button"
+        onClick={handleCopyLink}
+        title="Copiar link da página"
+        className="flex items-center justify-center w-9 h-9 rounded-full border bg-secondary/40 hover:bg-secondary/80 text-muted-foreground hover:text-primary transition-colors duration-200"
+      >
+        {copied ? <Check className="h-4 w-4 text-green-500" /> : <Link2 className="h-4 w-4" />}
+      </button>
+
+      {/* LinkedIn institucional */}
+      {linkedinUrl && (
+        <a
+          href={linkedinUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={`LinkedIn de ${name}`}
+          className="flex items-center justify-center w-9 h-9 rounded-full border bg-secondary/40 hover:bg-[#0077B5] hover:text-white hover:border-[#0077B5] text-muted-foreground transition-colors duration-200"
+        >
+          <Linkedin className="h-4 w-4" />
+        </a>
+      )}
+
+      {/* Site institucional */}
+      {websiteUrl && (
+        <a
+          href={websiteUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={`Site oficial de ${name}`}
+          className="flex items-center justify-center w-9 h-9 rounded-full border bg-secondary/40 hover:bg-primary hover:text-white hover:border-primary text-muted-foreground transition-colors duration-200"
+        >
+          <Globe className="h-4 w-4" />
+        </a>
+      )}
+
+      {/* Compartilhar nativo (mobile) */}
+      {typeof navigator !== "undefined" && "share" in navigator && (
+        <button
+          type="button"
+          title="Compartilhar"
+          onClick={() =>
+            navigator.share({
+              title: name,
+              url: window.location.href,
+            })
+          }
+          className="flex items-center justify-center w-9 h-9 rounded-full border bg-secondary/40 hover:bg-secondary/80 text-muted-foreground hover:text-primary transition-colors duration-200 md:hidden"
+        >
+          <Share2 className="h-4 w-4" />
+        </button>
+      )}
     </div>
   );
 };
@@ -143,15 +237,23 @@ const InstitutionDetail = () => {
       <div className="container -mt-20 relative">
         <div className="rounded-3xl border bg-card p-8 shadow-elegant md:p-12">
 
-          {/* Título centralizado, descrição alinhada à esquerda */}
-          <div>
-            <h1 className="font-display text-3xl font-bold md:text-5xl text-center">
+          {/* Título + ShareBar lado a lado no desktop, empilhado no mobile */}
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <h1 className="font-display text-3xl font-bold md:text-5xl text-center md:text-left flex-1">
               {inst.name}
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground">
-              {inst.description}
-            </p>
+            <div className="flex justify-center md:justify-end md:pt-3 shrink-0">
+              <ShareBar
+                name={inst.name}
+                linkedinUrl={inst.linkedin_url}
+                websiteUrl={inst.website_url}
+              />
+            </div>
           </div>
+
+          <p className="mt-4 text-lg text-muted-foreground">
+            {inst.description}
+          </p>
 
           {/* Desktop: 2 linhas + "Ver mais..." */}
           {(inst.mission || inst.impact) && (
