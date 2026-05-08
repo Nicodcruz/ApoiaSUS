@@ -72,6 +72,7 @@ export type Database = {
       }
       institutions: {
         Row: {
+          certification_url: string | null
           created_at: string
           description: string
           id: string
@@ -81,6 +82,7 @@ export type Database = {
           name: string
         }
         Insert: {
+          certification_url?: string | null
           created_at?: string
           description: string
           id?: string
@@ -90,6 +92,7 @@ export type Database = {
           name: string
         }
         Update: {
+          certification_url?: string | null
           created_at?: string
           description?: string
           id?: string
