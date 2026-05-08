@@ -55,23 +55,13 @@ const Home = () => {
               </Button>
             </div>
             <div className="mt-12 grid grid-cols-3 gap-6">
-              {[
-                { value: "10k+", label: "Doadores" },
-                { value: "R$ 2M", label: "Arrecadados" },
-                { value: "50+", label: "Instituições" },
-              ].map((s) => (
-                <div key={s.label}>
-                  <div className="font-display text-2xl font-bold md:text-3xl">{s.value}</div>
-                  <div className="text-sm text-primary-foreground/70">{s.label}</div>
-                </div>
-              ))}
             </div>
           </div>
           <div className="hidden md:flex items-center justify-center animate-float">
             <div className="relative">
               <div className="absolute inset-0 rounded-full bg-accent/30 blur-3xl" />
               <img
-                src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=600"
+                src="public\img\Zé_gotinha.png"
                 alt="Voluntários cuidando de pessoas"
                 className="relative w-full max-w-md rounded-3xl object-cover shadow-elegant"
               />
@@ -83,7 +73,7 @@ const Home = () => {
       {/* Sobre a campanha */}
       <section className="container py-20">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="font-display text-3xl font-bold md:text-4xl">Uma campanha. Milhares de vidas.</h2>
+          <h2 className="font-display text-3xl font-bold md:text-4xl">Pequenas Atitudes, Grandes Mudanças</h2>
           <p className="mt-4 text-lg text-muted-foreground">
             O ApoiaSUS reúne instituições que dependem da generosidade de pessoas como você para continuar oferecendo saúde, acolhimento e dignidade. Cada real doado se transforma em cuidado real.
           </p>

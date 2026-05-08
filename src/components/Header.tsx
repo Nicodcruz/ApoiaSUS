@@ -16,9 +16,6 @@ const Header = () => {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl">
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2 font-display text-xl font-bold">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl gradient-primary shadow-glow">
-            <Heart className="h-5 w-5 text-primary-foreground" fill="currentColor" />
-          </div>
           <span className="text-gradient">ApoiaSUS</span>
         </Link>
 
