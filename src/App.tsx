@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,6 +16,27 @@ import IntroScreen from "./components/IntroScreen.tsx";
 
 const queryClient = new QueryClient();
 
+const AnimatedRoutes = () => {
+  const location = useLocation();
+
+  return (
+    <div key={location.pathname} className="page-transition">
+      <Routes location={location}>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/instituicoes" element={<Institutions />} />
+          <Route path="/instituicoes/:id" element={<InstitutionDetail />} />
+          <Route path="/doar/:id" element={<Donate />} />
+          <Route path="/sobre" element={<About />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </div>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -23,18 +44,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/instituicoes" element={<Institutions />} />
-            <Route path="/instituicoes/:id" element={<InstitutionDetail />} />
-            <Route path="/doar/:id" element={<Donate />} />
-            <Route path="/sobre" element={<About />} />
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AnimatedRoutes />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

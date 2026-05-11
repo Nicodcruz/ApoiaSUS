@@ -8,6 +8,9 @@ const DAYS_UNTIL_RESET = 0; // 0 = nunca mais mostra
 
 function shouldShowIntro(): boolean {
   try {
+    // Nunca mostra em mobile
+    if (window.innerWidth <= 768) return false;
+
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return true;
     if (DAYS_UNTIL_RESET === 0) return false;
@@ -35,15 +38,12 @@ export default function IntroScreen() {
       hasShown.current = true;
       markIntroSeen();
       setVisible(true);
-      // Pequeno delay para garantir que o CSS de opacity:0 já foi aplicado
-      // antes de mudar para "playing" (dispara a transição de fade-in)
       requestAnimationFrame(() => {
         setTimeout(() => setPhase("playing"), 50);
       });
     }
   }, []);
 
-  // Assim que o vídeo estiver pronto, força o play
   useEffect(() => {
     if (phase !== "playing") return;
     const video = videoRef.current;
@@ -51,7 +51,6 @@ export default function IntroScreen() {
 
     const tryPlay = () => {
       video.play().catch(() => {
-        // Autoplay bloqueado pelo browser → tenta muted
         video.muted = true;
         video.play().catch(console.error);
       });
@@ -66,16 +65,13 @@ export default function IntroScreen() {
     return () => video.removeEventListener("canplay", tryPlay);
   }, [phase]);
 
-  // Chamado quando o vídeo termina naturalmente
   function dismiss() {
     if (phase === "fading" || phase === "gone") return;
-    // Inicia o fade-out da overlay (opacity 1 → 0)
     setPhase("fading");
-    // Após a transição concluir, remove do DOM completamente
     setTimeout(() => {
       setPhase("gone");
       setVisible(false);
-    }, 800); // deve bater com a duração da transition abaixo
+    }, 800);
   }
 
   if (!visible) return null;
@@ -92,7 +88,6 @@ export default function IntroScreen() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        // Fade-in na entrada, fade-out suave na saída — sem camada extra de preto
         opacity: phase === "entering" ? 0 : isExiting ? 0 : 1,
         transition:
           phase === "entering"

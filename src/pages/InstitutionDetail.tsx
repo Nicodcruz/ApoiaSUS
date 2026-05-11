@@ -12,6 +12,7 @@ import {
   Globe,
   Share2,
   Check,
+  MapPin,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,6 +28,7 @@ interface Institution {
   certification_url: string | null;
   linkedin_url: string | null;
   website_url: string | null;
+  location_url: string | null;
 }
 
 /** Desktop: 2 linhas + "Ver mais..." */
@@ -116,10 +118,12 @@ const ShareBar = ({
   name,
   linkedinUrl,
   websiteUrl,
+  locationUrl,
 }: {
   name: string;
   linkedinUrl: string | null;
   websiteUrl: string | null;
+  locationUrl: string | null;
 }) => {
   const [copied, setCopied] = useState(false);
 
@@ -168,6 +172,19 @@ const ShareBar = ({
           className="flex items-center justify-center w-9 h-9 rounded-full border bg-secondary/40 hover:bg-primary hover:text-white hover:border-primary text-muted-foreground transition-colors duration-200"
         >
           <Globe className="h-4 w-4" />
+        </a>
+      )}
+
+      {/* Localização — Google Maps */}
+      {locationUrl && (
+        <a
+          href={locationUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={`Localização de ${name}`}
+          className="flex items-center justify-center w-9 h-9 rounded-full border bg-secondary/40 hover:bg-red-500 hover:text-white hover:border-red-500 text-muted-foreground transition-colors duration-200"
+        >
+          <MapPin className="h-4 w-4" />
         </a>
       )}
 
@@ -247,6 +264,7 @@ const InstitutionDetail = () => {
                 name={inst.name}
                 linkedinUrl={inst.linkedin_url}
                 websiteUrl={inst.website_url}
+                locationUrl={inst.location_url}
               />
             </div>
           </div>

@@ -77,6 +77,7 @@ export type Database = {
           image_url: string | null
           impact: string | null
           linkedin_url: string | null
+          location_url: string | null
           mission: string | null
           name: string
           website_url: string | null
@@ -89,6 +90,7 @@ export type Database = {
           image_url?: string | null
           impact?: string | null
           linkedin_url?: string | null
+          location_url?: string | null
           mission?: string | null
           name: string
           website_url?: string | null
@@ -101,6 +103,7 @@ export type Database = {
           image_url?: string | null
           impact?: string | null
           linkedin_url?: string | null
+          location_url?: string | null
           mission?: string | null
           name?: string
           website_url?: string | null
