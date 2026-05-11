@@ -128,6 +128,21 @@ export type Database = {
         }
         Relationships: []
       }
+      site_config: {
+        Row: {
+          id: string
+          hero_image_url: string | null
+        }
+        Insert: {
+          id?: string
+          hero_image_url?: string | null
+        }
+        Update: {
+          id?: string
+          hero_image_url?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string

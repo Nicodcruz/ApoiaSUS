@@ -12,12 +12,14 @@ import About from "./pages/About";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound.tsx";
+import IntroScreen from "./components/IntroScreen.tsx";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+      <IntroScreen />
       <Toaster />
       <Sonner />
       <BrowserRouter>
