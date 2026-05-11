@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import { Heart, Lock, Menu, X } from "lucide-react";
+import { Lock, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -15,8 +15,9 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl">
       <div className="container flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 font-display text-xl font-bold">
-          <span className="text-gradient">ApoiaSUS</span>
+        <Link to="/" className="flex items-center gap-0 font-display text-xl font-bold">
+          <span style={{ color: "#1B3A8C" }}>Apoia</span>
+          <span style={{ color: "#008B8B" }}>SUS</span>
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

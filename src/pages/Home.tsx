@@ -12,12 +12,10 @@ interface Institution {
   image_url: string | null;
 }
 
-const FALLBACK_HERO = "public/img/Zé_gotinha.png";
-
 const Home = () => {
   const [institutions, setInstitutions] = useState<Institution[]>([]);
   const [loading, setLoading] = useState(true);
-  const [heroImageUrl, setHeroImageUrl] = useState<string>(FALLBACK_HERO);
+  const [heroImageUrl, setHeroImageUrl] = useState<string | null>(null);
   const [heroLoading, setHeroLoading] = useState(true);
 
   useEffect(() => {
@@ -33,8 +31,8 @@ const Home = () => {
         setLoading(false);
       });
 
-    // Busca imagem hero — cast para any para contornar tipagem enquanto a tabela
-    // ainda não está sincronizada pelo CLI do Supabase
+    // Busca imagem hero do Supabase (tabela site_config)
+    // cast para any pois a tabela ainda pode não estar no tipo gerado pelo CLI
     (supabase as any)
       .from("site_config")
       .select("hero_image_url")
@@ -95,22 +93,19 @@ const Home = () => {
             <div className="mt-12 grid grid-cols-3 gap-6" />
           </div>
 
-          {/* Imagem hero */}
+          {/* Imagem hero — somente do Supabase */}
           <div className="hidden md:flex items-center justify-center animate-float">
             <div className="relative">
               <div className="absolute inset-0 rounded-full bg-accent/30 blur-3xl" />
               {heroLoading ? (
                 <Skeleton className="relative w-full max-w-md h-80 rounded-3xl" />
-              ) : (
+              ) : heroImageUrl ? (
                 <img
                   src={heroImageUrl}
                   alt="Imagem principal da campanha"
                   className="relative w-full max-w-md rounded-3xl object-cover shadow-elegant"
-                  onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).src = FALLBACK_HERO;
-                  }}
                 />
-              )}
+              ) : null}
             </div>
           </div>
         </div>
